@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <title id="title">Welcome</title>
+</head>
+<body>
+<div style="padding: 3%;">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Welcome account <span th:text="${user.getAccountNumber()}">error</span></h1>
+            <p>from here you may check your balance, withdraw or deposit</p>
+        </div>
+        <div class="well">
+            <form action="#" th:action="@{/transaction}" th:object="${transaction}" method="post" id="transaction">
+                <div class="well">
+                    <div class="form-group">
+                        <label class="sr-only" for="amount">Amount (in dollars)</label>
+                        <div class="input-group" style="width: 180px;">
+                            <div class="input-group-addon">$</div>
+                            <input th:field="*{amount}" type="number" class="form-control" id="amount" placeholder="amount"/>
+                            <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">amount error</span>
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="well">
+                    <div class="form-group">
+                        <label for="reason">reason for transaction: </label>
+                        <input th:field="*{reason}" type="text" class="form-control" id="reason" placeholder="reason"/>
+                        <span th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}">reason error</span>
+                    </div>
+                </div>
+                <div class="well">
+                    <p><b>what type of transaction is this?:</b></p>
+                    <label class="radio-inline">
+                        <input th:field="*{action}" type="radio" name="action" id="withdraw" value="withdraw"/> withdraw
+                    </label>
+                    <label class="radio-inline">
+                        <input th:field="*{action}" type="radio" name="action" id="deposit" value="deposit"/> deposit
+                    </label>
+                    <span th:if="${#fields.hasErrors('action')}" th:errors="*{action}">reason error</span>
+                </div>
+                <input type="hidden" name="userId" th:value="${user.getId()}" id="userId"/>
+                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">id error</span>
+            </form>
+
+            <form action="#" th:action="@{/balance}" th:object="${transaction}" method="post" id="balance">
+                <input type="hidden" name="userId" th:value="${user.getId()}" id="userId"/>
+                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">id error</span>
+            </form>
+
+            <form action="#" th:action="@{/history}" th:object="${transaction}" method="post" id="history">
+                <input type="hidden" name="userId" th:value="${user.getId()}" id="userId"/>
+                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">id error</span>
+            </form>
+
+            <div class="well" style="text-align: center;">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-default" id="transaction_button">Submit Transaction</button>
+                    <button type="button" class="btn btn-default" id="balance_button">Check Balance</button>
+                    <button type="button" class="btn btn-default" id="history_button">View Transaction History</button>
+                    <a class="btn btn-default" href="logout">Logout</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="well">
+            <div th:utext="${message}">error</div>
+        </div>
+    </div>
+
+
+</div>
+<div id="hidden" style="display: none;" th:text="${user.getAccountNumber()}">error</div>
+<script>
+    //display account number in title bar for kicks
+    document.getElementById('title').innerHTML += ' ' + document.getElementById('hidden').innerHTML;
+    //checks a radio so user cant submit empty radio
+    document.getElementById('deposit').checked = true;
+    //submit transaction
+    document.getElementById('transaction_button').addEventListener('click', () => {
+        document.getElementById('transaction').submit();
+    });
+    //submit balance
+    document.getElementById('balance_button').addEventListener('click', () => {
+        document.getElementById('balance').submit();
+    });
+    //submit history
+    document.getElementById('history_button').addEventListener('click', () => {
+        document.getElementById('history').submit();
+    });
+</script>
+</body>
+</html>

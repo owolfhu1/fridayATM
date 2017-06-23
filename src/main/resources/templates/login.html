@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <title>Bank of Orion</title>
+</head>
+<body>
+<div style="padding: 5%;">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Welcome to Orion's ATM</h1>
+            <p>Bank of Orion</p>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+            <th>Login:</th>
+            <th>Create new account:</th>
+            </thead>
+            <tr>
+                <th>
+                    <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+                        <div class="form-group">
+                            <label for="accountNumber">Enter your account number:</label>
+                            <input th:field="*{accountNumber}" type="number" class="form-control" id="accountNumber" placeholder="accountNumber"/>
+                            <span th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">accountNumber error</span>
+                        </div>
+                        <button type="submit" class="btn btn-default">login</button>
+                    </form>
+                </th>
+                <th>
+                    <p>how much would you like to deposit when you create your account?</p>
+                    <form action="#" th:action="@{/create}" th:object="${transaction}" method="post">
+                        <div class="form-group">
+                            <label class="sr-only" for="amount">Amount (in dollars)</label>
+                            <div class="input-group" style="width: 180px;">
+                                <div class="input-group-addon">$</div>
+                                <input th:field="*{amount}" type="number" class="form-control" id="amount" placeholder="amount"/>
+                                <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">amount error</span>
+                                <div class="input-group-addon">.00</div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-default">Create Account</button>
+                    </form>
+                </th>
+            </tr>
+        </table>
+
+
+
+
+
+    </div>
+
+</div>
+
+</body>
+</html>
